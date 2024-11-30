@@ -83,18 +83,24 @@ func KeyExpansion(key []byte) []byte {
 	return WordsToBytes(ret)
 }
 
-func AddRoundKey(s, key []byte) []byte {
-	ret := make([]byte, len(s))
-	for i := 0; i < len(s); i++ {
-		ret[i] = s[i] ^ key[i]
+func AddRoundKey(s, key AesState) AesState {
+	return AesState{
+		s[0] ^ key[0], s[1] ^ key[1], s[2] ^ key[2], s[3] ^ key[3],
+		s[4] ^ key[4], s[5] ^ key[5], s[6] ^ key[6], s[7] ^ key[7],
+		s[8] ^ key[8], s[9] ^ key[9], s[10] ^ key[10], s[11] ^ key[11],
+		s[12] ^ key[12], s[13] ^ key[13], s[14] ^ key[14], s[15] ^ key[15],
 	}
-	return ret
 }
 
-func SubBytes(s []byte) []byte {
+func SubBytes(s AesState) AesState {
 	ret := make([]byte, len(s))
 	for i := 0; i < len(s); i++ {
 		ret[i] = sbox(s[i])
 	}
-	return ret
+	return AesState{
+		sbox(s[0]), sbox(s[1]), sbox(s[2]), sbox(s[3]),
+		sbox(s[4]), sbox(s[5]), sbox(s[6]), sbox(s[7]),
+		sbox(s[8]), sbox(s[9]), sbox(s[10]), sbox(s[11]),
+		sbox(s[12]), sbox(s[13]), sbox(s[14]), sbox(s[15]),
+	}
 }
