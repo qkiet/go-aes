@@ -109,3 +109,20 @@ func ShiftRows(s AesState) AesState {
 		{s[3][3], s[3][0], s[3][1], s[3][2]},
 	}
 }
+
+func MixColumns(s AesState) AesState {
+	var ret AesState
+	for i := 0; i < 4; i++ {
+		ret[0][i] = GF_Multiply(0x2, s[0][i]) ^ GF_Multiply(0x3, s[1][i]) ^ s[2][i] ^ s[3][i]
+	}
+	for i := 0; i < 4; i++ {
+		ret[1][i] = s[0][i] ^ GF_Multiply(0x2, s[1][i]) ^ GF_Multiply(0x3, s[2][i]) ^ s[3][i]
+	}
+	for i := 0; i < 4; i++ {
+		ret[2][i] = s[0][i] ^ s[1][i] ^ GF_Multiply(0x2, s[2][i]) ^ GF_Multiply(0x3, s[3][i])
+	}
+	for i := 0; i < 4; i++ {
+		ret[3][i] = GF_Multiply(0x3, s[0][i]) ^ s[1][i] ^ s[2][i] ^ GF_Multiply(0x2, s[3][i])
+	}
+	return ret
+}
