@@ -41,18 +41,6 @@ func WordsToBytes(ws []AesWord) []byte {
 
 type AesState [16]byte
 
-func BytesToAesState(b []byte) (AesState, error) {
-	if len(b) != AesCipherUnitDataSize {
-		return AesState{}, errors.New("number of bytes must be 16")
-	}
-	return AesState{
-		b[0], b[1], b[2], b[3],
-		b[4], b[5], b[6], b[7],
-		b[8], b[9], b[10], b[11],
-		b[12], b[13], b[14], b[15],
-	}, nil
-}
-
 func WordsToAesState(ws []AesWord) (AesState, error) {
 	if len(ws) != 4 {
 		return AesState{}, errors.New("number of words must be 4")
