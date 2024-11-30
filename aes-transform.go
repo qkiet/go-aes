@@ -90,3 +90,11 @@ func AddRoundKey(s, key []byte) []byte {
 	}
 	return ret
 }
+
+func SubBytes(s []byte) []byte {
+	ret := make([]byte, len(s))
+	for i := 0; i < len(s); i++ {
+		ret[i] = sbox(s[i])
+	}
+	return ret
+}

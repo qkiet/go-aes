@@ -91,3 +91,20 @@ func Test_AES128AddRoundKey(t *testing.T) {
 		assert.Equal(t, expectedOutputBytes, roundedKey)
 	}
 }
+
+func Test_SubBytes(t *testing.T) {
+	var inputs = []string{
+		"193de3bea0f4e22b9ac68d2ae9f84808",
+		"a49c7ff2689f352b6b5bea43026a5049",
+	}
+	var expectedOutputs = []string{
+		"d42711aee0bf98f1b8b45de51e415230",
+		"49ded28945db96f17f39871a7702533b",
+	}
+	for i, input := range inputs {
+		inputBytes := convertHexStringsToBytesAndCheck(t, input)
+		expectedOutputBytes := convertHexStringsToBytesAndCheck(t, expectedOutputs[i])
+		calBytes := SubBytes(inputBytes)
+		assert.Equal(t, expectedOutputBytes, calBytes)
+	}
+}
