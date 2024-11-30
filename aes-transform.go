@@ -104,3 +104,12 @@ func SubBytes(s AesState) AesState {
 		sbox(s[12]), sbox(s[13]), sbox(s[14]), sbox(s[15]),
 	}
 }
+
+func ShiftRows(s AesState) AesState {
+	return AesState{
+		s[0], s[1], s[2], s[3],
+		s[5], s[6], s[7], s[4],
+		s[10], s[11], s[8], s[9],
+		s[15], s[12], s[13], s[14],
+	}
+}

@@ -129,3 +129,24 @@ func Test_SubBytes(t *testing.T) {
 		assert.Equal(t, expectedState, calculatedState)
 	}
 }
+
+func Test_ShiftRows(t *testing.T) {
+	var inputs = []string{
+		"d42711aee0bf98f1b8b45de51e415230",
+		"49ded28945db96f17f39871a7702533b",
+		"ac73cf7befc111df13b5d6b545235ab8",
+	}
+	var expectedOutputs = []string{
+		"d4bf5d30e0b452aeb84111f11e2798e5",
+		"49db873b453953897f02d2f177de961a",
+		"acc1d6b8efb55a7b1323cfdf457311b5",
+	}
+	for i, input := range inputs {
+		inputBytes := convertHexStringsToBytesAndCheck(t, input)
+		inputState := convertBytesToAesStateAndCheck(t, inputBytes)
+		expectedOutputBytes := convertHexStringsToBytesAndCheck(t, expectedOutputs[i])
+		expectedState := convertBytesToAesStateAndCheck(t, expectedOutputBytes)
+		calculatedState := ShiftRows(inputState)
+		assert.Equal(t, expectedState, calculatedState)
+	}
+}
