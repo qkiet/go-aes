@@ -85,31 +85,27 @@ func KeyExpansion(key []byte) []byte {
 
 func AddRoundKey(s, key AesState) AesState {
 	return AesState{
-		s[0] ^ key[0], s[1] ^ key[1], s[2] ^ key[2], s[3] ^ key[3],
-		s[4] ^ key[4], s[5] ^ key[5], s[6] ^ key[6], s[7] ^ key[7],
-		s[8] ^ key[8], s[9] ^ key[9], s[10] ^ key[10], s[11] ^ key[11],
-		s[12] ^ key[12], s[13] ^ key[13], s[14] ^ key[14], s[15] ^ key[15],
+		{s[0][0] ^ key[0][0], s[0][1] ^ key[0][1], s[0][2] ^ key[0][2], s[0][3] ^ key[0][3]},
+		{s[1][0] ^ key[1][0], s[1][1] ^ key[1][1], s[1][2] ^ key[1][2], s[1][3] ^ key[1][3]},
+		{s[2][0] ^ key[2][0], s[2][1] ^ key[2][1], s[2][2] ^ key[2][2], s[2][3] ^ key[2][3]},
+		{s[3][0] ^ key[3][0], s[3][1] ^ key[3][1], s[3][2] ^ key[3][2], s[3][3] ^ key[3][3]},
 	}
 }
 
 func SubBytes(s AesState) AesState {
-	ret := make([]byte, len(s))
-	for i := 0; i < len(s); i++ {
-		ret[i] = sbox(s[i])
-	}
 	return AesState{
-		sbox(s[0]), sbox(s[1]), sbox(s[2]), sbox(s[3]),
-		sbox(s[4]), sbox(s[5]), sbox(s[6]), sbox(s[7]),
-		sbox(s[8]), sbox(s[9]), sbox(s[10]), sbox(s[11]),
-		sbox(s[12]), sbox(s[13]), sbox(s[14]), sbox(s[15]),
+		{sbox(s[0][0]), sbox(s[0][1]), sbox(s[0][2]), sbox(s[0][3])},
+		{sbox(s[1][0]), sbox(s[1][1]), sbox(s[1][2]), sbox(s[1][3])},
+		{sbox(s[2][0]), sbox(s[2][1]), sbox(s[2][2]), sbox(s[2][3])},
+		{sbox(s[3][0]), sbox(s[3][1]), sbox(s[3][2]), sbox(s[3][3])},
 	}
 }
 
 func ShiftRows(s AesState) AesState {
 	return AesState{
-		s[0], s[1], s[2], s[3],
-		s[5], s[6], s[7], s[4],
-		s[10], s[11], s[8], s[9],
-		s[15], s[12], s[13], s[14],
+		{s[0][0], s[0][1], s[0][2], s[0][3]},
+		{s[1][1], s[1][2], s[1][3], s[1][0]},
+		{s[2][2], s[2][3], s[2][0], s[2][1]},
+		{s[3][3], s[3][0], s[3][1], s[3][2]},
 	}
 }

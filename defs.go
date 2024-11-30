@@ -39,17 +39,17 @@ func WordsToBytes(ws []AesWord) []byte {
 	return ret
 }
 
-type AesState [16]byte
+type AesState [4][4]byte
 
 func WordsToAesState(ws []AesWord) (AesState, error) {
 	if len(ws) != 4 {
 		return AesState{}, errors.New("number of words must be 4")
 	}
 	return AesState{
-		ws[0][0], ws[1][0], ws[2][0], ws[3][0],
-		ws[0][1], ws[1][1], ws[2][1], ws[3][1],
-		ws[0][2], ws[1][2], ws[2][2], ws[3][2],
-		ws[0][3], ws[1][3], ws[2][3], ws[3][3],
+		{ws[0][0], ws[1][0], ws[2][0], ws[3][0]},
+		{ws[0][1], ws[1][1], ws[2][1], ws[3][1]},
+		{ws[0][2], ws[1][2], ws[2][2], ws[3][2]},
+		{ws[0][3], ws[1][3], ws[2][3], ws[3][3]},
 	}, nil
 }
 
