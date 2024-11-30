@@ -48,6 +48,12 @@ func convertHexStringsToBytesAndCheck(t *testing.T, s string) []byte {
 	return b
 }
 
+func convertBytesToAesStateAndCheck(t *testing.T, s []byte) AesState {
+	state, err := BytesToAesState(s)
+	assert.NoError(t, err)
+	return state
+}
+
 func Test_AES128KeyExpansion(t *testing.T) {
 	var keys = []string{
 		"2b7e151628aed2a6abf7158809cf4f3c",
@@ -85,10 +91,13 @@ func Test_AES128AddRoundKey(t *testing.T) {
 	}
 	for i, input := range inputs {
 		inputBytes := convertHexStringsToBytesAndCheck(t, input)
+		inputState := convertBytesToAesStateAndCheck(t, inputBytes)
 		keyBytes := convertHexStringsToBytesAndCheck(t, keys[i])
+		keyState := convertBytesToAesStateAndCheck(t, keyBytes)
 		expectedOutputBytes := convertHexStringsToBytesAndCheck(t, expectedOutputs[i])
-		roundedKey := AddRoundKey(inputBytes, keyBytes)
-		assert.Equal(t, expectedOutputBytes, roundedKey)
+		expectedState := convertBytesToAesStateAndCheck(t, expectedOutputBytes)
+		calculatedState := AddRoundKey(inputState, keyState)
+		assert.Equal(t, expectedState, calculatedState)
 	}
 }
 
@@ -103,8 +112,10 @@ func Test_SubBytes(t *testing.T) {
 	}
 	for i, input := range inputs {
 		inputBytes := convertHexStringsToBytesAndCheck(t, input)
+		inputState := convertBytesToAesStateAndCheck(t, inputBytes)
 		expectedOutputBytes := convertHexStringsToBytesAndCheck(t, expectedOutputs[i])
-		calBytes := SubBytes(inputBytes)
-		assert.Equal(t, expectedOutputBytes, calBytes)
+		expectedState := convertBytesToAesStateAndCheck(t, expectedOutputBytes)
+		calculatedState := SubBytes(inputState)
+		assert.Equal(t, expectedState, calculatedState)
 	}
 }

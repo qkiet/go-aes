@@ -39,6 +39,32 @@ func WordsToBytes(ws []AesWord) []byte {
 	return ret
 }
 
+type AesState [16]byte
+
+func BytesToAesState(b []byte) (AesState, error) {
+	if len(b) != AesCipherUnitDataSize {
+		return AesState{}, errors.New("number of bytes must be 16")
+	}
+	return AesState{
+		b[0], b[1], b[2], b[3],
+		b[4], b[5], b[6], b[7],
+		b[8], b[9], b[10], b[11],
+		b[12], b[13], b[14], b[15],
+	}, nil
+}
+
+func WordsToAesState(ws []AesWord) (AesState, error) {
+	if len(ws) != 4 {
+		return AesState{}, errors.New("number of words must be 4")
+	}
+	return AesState{
+		ws[0][0], ws[0][1], ws[0][2], ws[0][3],
+		ws[1][0], ws[1][1], ws[1][2], ws[1][3],
+		ws[2][0], ws[2][1], ws[2][2], ws[2][3],
+		ws[3][0], ws[3][1], ws[3][2], ws[3][3],
+	}, nil
+}
+
 const (
 	AesCipherType_Aes128 AesCipherType = "AesCipherType_Aes128"
 	AesCipherType_Aes192 AesCipherType = "AesCipherType_Aes192"
