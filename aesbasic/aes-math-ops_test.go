@@ -78,4 +78,12 @@ func Test_MultiplySimple(t *testing.T) {
 	b = 0xca
 	c = GF_Multiply(a, b)
 	assert.Equal(t, byte(0x01), c)
+	a = 0x00
+	b = 0xca
+	c = GF_Multiply(a, b)
+	assert.Equal(t, byte(0x00), c)
+	a = 0x53
+	b = 0x00
+	c = GF_Multiply(a, b)
+	assert.Equal(t, byte(0x00), c)
 }

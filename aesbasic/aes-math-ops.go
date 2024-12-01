@@ -46,6 +46,9 @@ func GF_MultiplyBy2(a byte) byte {
 
 func GF_Multiply(a, b byte) byte {
 	pos := getSetBitPositions(int(b))
+	if len(pos) == 0 {
+		return 0
+	}
 	t := a
 	var res byte
 	for i := 0; i <= int(pos[len(pos)-1]); i++ {
