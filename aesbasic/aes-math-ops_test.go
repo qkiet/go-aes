@@ -1,4 +1,4 @@
-package aes_from_specs
+package aesbasic
 
 import (
 	"testing"

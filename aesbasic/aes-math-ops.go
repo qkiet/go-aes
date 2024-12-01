@@ -1,6 +1,7 @@
-package aes_from_specs
+package aesbasic
 
 import (
+	"github.com/qkiet/aes-from-specs/common"
 	"golang.org/x/exp/slices"
 )
 
@@ -15,8 +16,8 @@ func GF_AddByte(a, b byte) byte {
 	return a ^ b
 }
 
-func GF_AddWord(a, b AesWord) AesWord {
-	return AesWord{
+func GF_AddWord(a, b common.AesWord) common.AesWord {
+	return common.AesWord{
 		GF_AddByte(a[0], b[0]), GF_AddByte(a[1], b[1]),
 		GF_AddByte(a[2], b[2]), GF_AddByte(a[3], b[3]),
 	}

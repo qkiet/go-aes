@@ -1,10 +1,11 @@
-package aes_from_specs
+package aesbasic
 
 import (
 	"errors"
 	"strconv"
 	"testing"
 
+	"github.com/qkiet/aes-from-specs/common"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -48,17 +49,17 @@ func convertHexStringsToBytesAndCheck(t *testing.T, s string) []byte {
 	return b
 }
 
-func convertBytesToAesStateAndCheck(t *testing.T, s []byte) AesState {
+func convertBytesToAesStateAndCheck(t *testing.T, s []byte) common.AesState {
 	state, err := bytesToAesState(s)
 	assert.NoError(t, err)
 	return state
 }
 
-func bytesToAesState(b []byte) (AesState, error) {
-	if len(b) != AesCipherUnitDataSize {
-		return AesState{}, errors.New("number of bytes must be 16")
+func bytesToAesState(b []byte) (common.AesState, error) {
+	if len(b) != common.AesCipherUnitDataSize {
+		return common.AesState{}, errors.New("number of bytes must be 16")
 	}
-	return AesState{
+	return common.AesState{
 		{b[0], b[4], b[8], b[12]},
 		{b[1], b[5], b[9], b[13]},
 		{b[2], b[6], b[10], b[14]},

@@ -1,13 +1,6 @@
-package aes_from_specs
+package aesbasic
 
-// type Aes128CipherContext struct {
-// 	Data [16]byte
-// 	Key  [16]byte
-// }
-
-// func (ctx *Aes128CipherContext) KeyExpansion() {
-
-// }
+import "github.com/qkiet/aes-from-specs/common"
 
 func sbox(a byte) byte {
 	sboxTable := [256]byte{
@@ -31,15 +24,15 @@ func sbox(a byte) byte {
 	return sboxTable[a]
 }
 
-func rotWord(b AesWord) AesWord {
-	ret := AesWord{
+func rotWord(b common.AesWord) common.AesWord {
+	ret := common.AesWord{
 		b[1], b[2], b[3], b[0],
 	}
 	return ret
 }
 
-func subWord(b AesWord) AesWord {
-	ret := AesWord{
+func subWord(b common.AesWord) common.AesWord {
+	ret := common.AesWord{
 		sbox(b[0]), sbox(b[1]), sbox(b[2]), sbox(b[3]),
 	}
 	return ret
@@ -49,7 +42,7 @@ func KeyExpansion(key []byte) []byte {
 	var roundNumber int
 	var expandedKeySize int
 	var keyLength int
-	rConConstants := [10]AesWord{
+	rConConstants := [10]common.AesWord{
 		{0x01, 0x00, 0x00, 0x00},
 		{0x02, 0x00, 0x00, 0x00},
 		{0x04, 0x00, 0x00, 0x00},
@@ -62,14 +55,14 @@ func KeyExpansion(key []byte) []byte {
 		{0x36, 0x00, 0x00, 0x00},
 	}
 	switch len(key) {
-	case int(AesKeySize_Aes128):
+	case int(common.AesKeySize_Aes128):
 		roundNumber = 10
 		expandedKeySize = 4 * (roundNumber + 1)
 		keyLength = 4
 	}
 	// because size of key is already checked, no need to check error here
-	keyWords, _ := BytesToWords(key)
-	ret := make([]AesWord, expandedKeySize)
+	keyWords, _ := common.BytesToWords(key)
+	ret := make([]common.AesWord, expandedKeySize)
 	copy(ret[0:keyLength], keyWords[:])
 	for i := 4; i <= 4*roundNumber+3; i++ {
 		var tmp = ret[i-1]
@@ -80,11 +73,11 @@ func KeyExpansion(key []byte) []byte {
 		}
 		ret[i] = GF_AddWord(ret[i-keyLength], tmp)
 	}
-	return WordsToBytes(ret)
+	return common.WordsToBytes(ret)
 }
 
-func AddRoundKey(s, key AesState) AesState {
-	return AesState{
+func AddRoundKey(s, key common.AesState) common.AesState {
+	return common.AesState{
 		{s[0][0] ^ key[0][0], s[0][1] ^ key[0][1], s[0][2] ^ key[0][2], s[0][3] ^ key[0][3]},
 		{s[1][0] ^ key[1][0], s[1][1] ^ key[1][1], s[1][2] ^ key[1][2], s[1][3] ^ key[1][3]},
 		{s[2][0] ^ key[2][0], s[2][1] ^ key[2][1], s[2][2] ^ key[2][2], s[2][3] ^ key[2][3]},
@@ -92,8 +85,8 @@ func AddRoundKey(s, key AesState) AesState {
 	}
 }
 
-func SubBytes(s AesState) AesState {
-	return AesState{
+func SubBytes(s common.AesState) common.AesState {
+	return common.AesState{
 		{sbox(s[0][0]), sbox(s[0][1]), sbox(s[0][2]), sbox(s[0][3])},
 		{sbox(s[1][0]), sbox(s[1][1]), sbox(s[1][2]), sbox(s[1][3])},
 		{sbox(s[2][0]), sbox(s[2][1]), sbox(s[2][2]), sbox(s[2][3])},
@@ -101,8 +94,8 @@ func SubBytes(s AesState) AesState {
 	}
 }
 
-func ShiftRows(s AesState) AesState {
-	return AesState{
+func ShiftRows(s common.AesState) common.AesState {
+	return common.AesState{
 		{s[0][0], s[0][1], s[0][2], s[0][3]},
 		{s[1][1], s[1][2], s[1][3], s[1][0]},
 		{s[2][2], s[2][3], s[2][0], s[2][1]},
@@ -110,8 +103,8 @@ func ShiftRows(s AesState) AesState {
 	}
 }
 
-func MixColumns(s AesState) AesState {
-	var ret AesState
+func MixColumns(s common.AesState) common.AesState {
+	var ret common.AesState
 	for i := 0; i < 4; i++ {
 		ret[0][i] = GF_Multiply(0x2, s[0][i]) ^ GF_Multiply(0x3, s[1][i]) ^ s[2][i] ^ s[3][i]
 	}
