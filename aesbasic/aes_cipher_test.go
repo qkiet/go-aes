@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_AES128Encrypt(t *testing.T) {
+func Test_AES128Cipher(t *testing.T) {
 	plainText := "00000000000000000000000000000000"
 	var keys = []string{
 		"6c002b682483e0cabcc731c253be5674",
@@ -40,5 +40,8 @@ func Test_AES128Encrypt(t *testing.T) {
 		calculatedBytes, err := AES128Encrypt(plainTextBytes, keyAes128)
 		assert.NoError(t, err)
 		assert.Equal(t, expectedOutputBytes, calculatedBytes)
+		calculatedBytes, err = AES128Decrypt(expectedOutputBytes, keyAes128)
+		assert.NoError(t, err)
+		assert.Equal(t, plainTextBytes, calculatedBytes)
 	}
 }
