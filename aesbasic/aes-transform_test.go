@@ -153,3 +153,38 @@ func Test_MixColumns(t *testing.T) {
 		assert.Equal(t, expectedState, calculatedState)
 	}
 }
+
+func Test_InvOperations(t *testing.T) {
+	var inputs = []string{
+		"d4bf5d30e0b452aeb84111f11e2798e5",
+		"49db873b453953897f02d2f177de961a",
+		"acc1d6b8efb55a7b1323cfdf457311b5",
+	}
+	key := []byte{
+		0x00, 0x01, 0x02, 0x03,
+		0x04, 0x05, 0x06, 0x07,
+		0x08, 0x09, 0x0a, 0x0b,
+		0x0c, 0x0d, 0x0e, 0x0f,
+	}
+	for _, input := range inputs {
+		inputBytes := convertHexStringsToBytesAndCheck(t, input)
+		inputState := convertBytesToAesStateAndCheck(t, inputBytes)
+
+		outputState := MixColumns(inputState)
+		invOutputState := InvMixColumns(outputState)
+		assert.Equal(t, inputState, invOutputState)
+
+		outputState = SubBytes(inputState)
+		invOutputState = InvSubBytes(outputState)
+		assert.Equal(t, inputState, invOutputState)
+
+		outputState = ShiftRows(inputState)
+		invOutputState = InvShiftRows(outputState)
+		assert.Equal(t, inputState, invOutputState)
+
+		keyState, _ := common.BytesToAesState(key)
+		outputState = AddRoundKey(inputState, keyState)
+		invOutputState = AddRoundKey(outputState, keyState)
+		assert.Equal(t, inputState, invOutputState)
+	}
+}
