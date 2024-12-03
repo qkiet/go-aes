@@ -55,10 +55,10 @@ func BytesToAesState(b []byte) (AesState, error) {
 		return AesState{}, fmt.Errorf("number of bytes must be 16 but received %d", len(b))
 	}
 	return AesState{
-		{b[0], b[0], b[2], b[3]},
-		{b[4], b[5], b[6], b[7]},
-		{b[8], b[9], b[10], b[11]},
-		{b[12], b[13], b[14], b[15]},
+		{b[0], b[4], b[8], b[12]},
+		{b[1], b[5], b[9], b[13]},
+		{b[2], b[6], b[10], b[14]},
+		{b[3], b[7], b[11], b[15]},
 	}, nil
 }
 
