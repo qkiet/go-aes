@@ -1,4 +1,4 @@
-module github.com/qkiet/aes-from-specs
+module github.com/qkiet/go-aes
 
 go 1.22.9
 

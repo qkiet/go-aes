@@ -3,7 +3,7 @@ package aesbasic
 import (
 	"fmt"
 
-	"github.com/qkiet/aes-from-specs/common"
+	"github.com/qkiet/go-aes/common"
 )
 
 func AES128Encrypt(pt []byte, k common.Aes128Key) ([]byte, error) {

@@ -1,6 +1,6 @@
 package aesbasic
 
-import "github.com/qkiet/aes-from-specs/common"
+import "github.com/qkiet/go-aes/common"
 
 func sbox(a byte) byte {
 	sboxTable := [256]byte{

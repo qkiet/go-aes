@@ -1,7 +1,7 @@
 package aesbasic
 
 import (
-	"github.com/qkiet/aes-from-specs/common"
+	"github.com/qkiet/go-aes/common"
 	"golang.org/x/exp/slices"
 )
 

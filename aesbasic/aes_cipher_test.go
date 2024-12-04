@@ -3,7 +3,7 @@ package aesbasic
 import (
 	"testing"
 
-	"github.com/qkiet/aes-from-specs/common"
+	"github.com/qkiet/go-aes/common"
 	"github.com/stretchr/testify/assert"
 )
 
